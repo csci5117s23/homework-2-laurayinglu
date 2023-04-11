@@ -1,0 +1,16 @@
+
+.main{
+    width: 80vw;
+    position: fixed;
+    right: 0;
+    height: 100vh;
+    /* background-color: rgba(17, 17, 17, 0.84); */
+    background-image: url('../../public/n2.jpeg');
+}
+
+.sideBar {
+  width: 20vw;
+  position: fixed;
+  background-image: url('../../public/n2.jpeg');
+  color: white;
+}

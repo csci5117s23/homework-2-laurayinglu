@@ -1,0 +1,98 @@
+.showItems {
+  height: 80vh;
+  color: white;
+  padding: 1em;
+  background-image: url('../../public/n2.jpeg');
+}
+
+.showItem {
+  background-color: rgb(255,255,255,0.8);
+  color: black;
+  margin: .2em;
+  margin-left: .5em;
+  margin-right: .5em;
+  height: 50px;
+  border-radius: .3em;
+  align-content: center;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.showItem:hover {
+  background-color: rgba(208, 208, 208, 0.9);
+}
+
+.deletebtn {
+  /* position: fixed;
+  right: 0; */
+  float: right;
+  cursor: pointer;
+}
+
+.containerWarp{
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 2em;
+  background-color: transparent;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.inputContainer {
+  padding: 1em;
+  background-color: rgba(79, 79, 79, 0.5);
+  /* background-color: transparent; */
+  display: flex;
+  align-items: center;
+  border-radius: .5em;
+  /* margin: 2em; */
+  width: 75vw;
+  margin: auto;
+  /* margin-left: 1.5em; */
+}
+
+.inputForm {
+  width: 100%;
+
+}
+
+.item {
+  padding: 10px;
+  margin: .5em;
+  width: 40%;
+  height: 2em;
+  font-size: 1em;
+  border: none;
+  background-color: transparent;
+  color:white;
+  display: inline;
+}
+
+.item::placeholder{
+  color: rgba(255,255,255,0.7);
+}
+
+.cat {
+  width: 15vw;
+  display: inline;
+}
+
+.submitBtn {
+  /* margin-left: 1em; */
+  /* display: inline; */
+  float: right;
+  padding: 1em 3em;
+}
+
+#taskInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+}
+
+
+.input:focus{
+    border: none;
+    outline: none;
+}
+
+
