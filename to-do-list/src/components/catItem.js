@@ -83,15 +83,17 @@ export default function CatItem({ cat, done, getCatMethod, hasCheckBox }) {
           </ol>
         </div> 
 
-        <div className={todosStyle.containerWarp}>
-          <div className={todosStyle.inputContainer}>
-            <AddIcon style={{ color: "white" }}/>
-            <form className={todosStyle.inputForm} method="POST">
-              <input className={catItemStyle.item} onChange={handleInput} onKeyDown = {(e)=>{if (e.key === 'Enter'){add()}}} type="text" value={content || ""} name="itemDesc" id="taskInput" placeholder="Add A Task..." required/>
-              <Button onClick={add} sx={{ padding: ".6em 2em",  float: "right" }} variant="contained">Add</Button>
-            </form>
+        {!done &&
+          <div className={todosStyle.containerWarp}>
+            <div className={todosStyle.inputContainer}>
+              <AddIcon style={{ color: "white" }}/>
+              <form className={todosStyle.inputForm} method="POST">
+                <input className={catItemStyle.item} onChange={handleInput} onKeyDown = {(e)=>{if (e.key === 'Enter'){add()}}} type="text" value={content || ""} name="itemDesc" id="taskInput" placeholder="Add A Task..." required/>
+                <Button onClick={add} sx={{ padding: ".6em 2em",  float: "right" }} variant="contained">Add</Button>
+              </form>
+            </div>
           </div>
-        </div>
+      }
 
       </>
     )

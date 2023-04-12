@@ -13,21 +13,39 @@
   margin-right: .5em;
   height: 50px;
   border-radius: .3em;
-  align-content: center;
-  justify-content: center;
   padding: 10px;
-  /* cursor: pointer; */
+  display: flex;
+  overflow:hidden;
 }
 
 .showItem:hover {
   background-color: rgba(208, 208, 208, 0.9);
 }
 
+.checkBox {
+  /* float: left; */
+  display: flex;
+}
+
+.content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  padding: .3em;
+}
+
 .deletebtn {
-  /* position: fixed;
-  right: 0; */
-  float: right;
   cursor: pointer;
+  background-color: transparent;
+  border: none;
+  margin: .5em;
+  display: flex;
+  float: right;
+}
+
+.deletebtn:hover {
+  color: rgb(182, 1, 1);
 }
 
 .containerWarp{
@@ -60,7 +78,7 @@
 .item {
   padding: 10px;
   margin: .5em;
-  width: 40%;
+  width: 80%;
   height: 2em;
   font-size: 1em;
   border: none;
@@ -93,6 +111,12 @@
 .input:focus{
     border: none;
     outline: none;
+}
+
+.dropdown {
+  height: 2em;
+  width: auto;
+  margin-left: 2em;
 }
 
 

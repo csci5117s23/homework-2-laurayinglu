@@ -17,3 +17,37 @@
   color: white;
   border-radius: .5em;
 }
+
+.deleteCatBtn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: .5em;
+}
+
+.deleteCatBtn:hover {
+  color: rgb(126, 55, 55);
+}
+
+.catInput {
+  margin: 2em;
+  content: center;
+  width: 10vw;
+  padding: .5em;
+  border-radius: .5em;
+}
+
+.addCatBtn {
+  padding: .6em 2em;
+  background-color: rgb(34, 154, 128);
+  color: white;
+  margin: .5em;
+  width: auto;
+  border-radius: .7em;
+  cursor: pointer;
+} 
+
+.addCatBtn:hover {
+  background-color: rgb(30, 132, 110);
+}

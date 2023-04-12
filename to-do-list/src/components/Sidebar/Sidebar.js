@@ -17,12 +17,11 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import { useAuth, SignInButton, UserButton, useUser, SignOutButton } from '@clerk/nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Button } from '@mui/material';
 
 import sideBarStyle from './sidebar.module.css';
-import { getItems, getAllCats, getTodoItems } from "@/modules/Data";
+import { addCat, getAllCats, getTodoItems, deleteCat } from "@/modules/Data";
 import styles from '@/styles/Home.module.css'
-import Link from 'next/link';
+
 
 export default function Sidebar() {
 
@@ -34,6 +33,7 @@ export default function Sidebar() {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   const router = useRouter();
   const { user } = useUser();
+  const [newCat, setNewCat] = useState('');
 
 
   useEffect(() => {
@@ -42,17 +42,18 @@ export default function Sidebar() {
         const token = await getToken({ template: "codehooks" });
         setJwt(token);
         setItems(await getTodoItems(token, userId));
+        setCategories(await getAllCats(token, userId));
       }
     }
     fetchTodos();
   }, [userId, jwt]);
 
-  useEffect(() => {
-    // console.log(items);
-    const cats = [...new Set(items.map((item) => item.category))];
-    console.log(cats);
-    setCategories(cats);
-  }, [items]);
+  // useEffect(() => {
+  //   // console.log(items);
+  //   const cats = [...new Set(items.map((item) => item.category))];
+  //   console.log(cats);
+  //   setCategories(cats);
+  // }, [items]);
 
   const handleClickTodoCat = () => {
     setTodoOpenCat(!openTodoCat);
@@ -69,6 +70,47 @@ export default function Sidebar() {
     borderColor: 'rgba(0, 0, 0, 0.12)',
     backgroundColor: 'rgba(174, 165, 232, 0.2)'
   };
+
+  const handleDeleteCat = async (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await deleteCat(jwt, id);
+    setCategories(await getAllCats(jwt, userId));
+  }
+
+  const handleInput = (e) => {
+    const newCatName = e.target.value;
+    setNewCat(newCatName);
+  }
+
+  async function addCategory(e) {
+    // e.preventDefault();
+    try {
+      const cat = {
+        userId: userId,
+        name: newCat
+      }
+
+      const newCate = await addCat(jwt, cat);
+      console.log(newCate);
+      setCategories([...categories, newCate]);
+      setNewCat("");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // go to /todo/:category
+  function gotoTodoCat(e, cat) {
+    e.preventDefault();
+    window.location.href = `/todos/${cat}`;
+  }
+
+  // go to /todo/:category
+  function gotoDoneCat(e, cat) {
+    e.preventDefault();
+    window.location.href = `/done/${cat}`;
+  }
 
 
   return (
@@ -108,8 +150,13 @@ export default function Sidebar() {
             <List component="div" disablePadding>
               {
                 categories.map((cat) => (
-                  <ListItemButton key={cat._id} sx={{ pl: 12 }} href={`/todos/${cat}`}>
-                    <ListItemText primary={cat} />
+                  <ListItemButton key={cat._id} sx={{ pl: 12 }} onClick={(e) => gotoTodoCat(e, cat.name)} >
+                    <ListItemText primary={cat.name} />
+                    <button className={sideBarStyle.deleteCatBtn} type="button" onClick={(e) => handleDeleteCat(e, cat._id)}> 
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
+                        <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+                      </svg>
+                    </button>
                   </ListItemButton>
                 ))
               }
@@ -139,14 +186,32 @@ export default function Sidebar() {
             <List component="div" disablePadding>
               {
                 categories.map((cat) => (
-                  <ListItemButton key={cat._id} sx={{ pl: 12 }} href={`/done/${cat}`}>
-                    <ListItemText primary={cat} />
+                  <ListItemButton key={cat._id} sx={{ pl: 12 }} onClick={(e) => gotoDoneCat(e, cat.name)} >
+                    <ListItemText primary={cat.name} />
+                    <button className={sideBarStyle.deleteCatBtn} type="button" onClick={(e) => handleDeleteCat(e, cat._id)}> 
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
+                        <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+                      </svg>
+                    </button>
                   </ListItemButton>
                 ))
               }
             </List>
           </Collapse>
         </List>
+
+        <Divider />
+        
+        {/* for user to add a new category */}
+        <form method="POST">
+          <input 
+            className={sideBarStyle.catInput} 
+            onChange={(e) => handleInput(e)} 
+            type="text" 
+            value={newCat} 
+            placeholder="Add A Category..." required/>
+          <button onClick={(e) => addCategory(e)} type="button" className={sideBarStyle.addCatBtn}>Add</button>
+        </form>
 
       </List>
   )

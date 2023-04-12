@@ -48,6 +48,7 @@
   color: white;
   border-radius: .8em;
   border: none;
+  cursor: pointer;
 }
 
 .deletebtn {
@@ -58,6 +59,7 @@
   color: white;
   border-radius: .8em;
   border: none;
+  cursor: pointer;
 }
 
 .backbtn {
