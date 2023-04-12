@@ -1,21 +1,33 @@
 const backend_base = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+
 /** GET REQUESTS **/
 
 // get all items of the current user
 export async function getItems(authToken, userId) {
-    const result = await fetch(`${backend_base}/toDoItems?userId=${userId}`, {
-        'method':'GET',
-        'headers': {'Authorization': 'Bearer ' + authToken}
-    })
-    return await result.json();
+  console.log(userId);
+
+  const result = await fetch(`${backend_base}/toDoItems?userId=${userId}`, {
+      'method':'GET',
+      headers: {
+        'x-api-key': API_KEY,
+        Authorization: `Bearer ${authToken}`,
+      },
+  });
+
+  console.log(JSON.stringify(result));
+  return await result.json();
 }
 
 // get a specific to do list item by item id
+// item id is unique
 export async function getTodoItem(authToken, todoId) {
   const result = await fetch(`${backend_base}/toDoItems/${todoId}`, {
       'method':'GET',
-      'headers': {'Authorization': 'Bearer ' + authToken}
+      headers: {
+        'x-api-key': API_KEY,
+        Authorization: `Bearer ${authToken}`,
+      },
   })
   return await result.json();
 }
@@ -93,23 +105,21 @@ export async function getTodoByCat(authToken, userId, cat) {
 
 // get done items by category
 export async function getDoneByCat(authToken, userId, cat) {
-  const result = await fetch(`${backend_base}/toDoItems?userId=${userId}&done=true&category=${cat}`, {
+  const response = await fetch(`${backend_base}/toDoItems?userId=${userId}&done=true&category=${cat}`, {
       method:'GET',
       headers: {
         'x-api-key': API_KEY,
         Authorization: `Bearer ${authToken}`,
       },
   })
-  if (result.ok) {
-      const res =  await result.json();
-      if (res.length >0) {
-          return res
-      } else {
-          return null
-      }
-  } else {
-      return null;
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error('Error fetching done by category:', errorData);
+    throw new Error('Failed to fetch done items by category');
   }
+  
+  console.log(JSON.stringify(response));
+  return await response.json();
 }
 
 

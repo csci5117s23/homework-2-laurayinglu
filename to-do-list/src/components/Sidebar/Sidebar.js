@@ -14,38 +14,45 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 
-import { useAuth, SignInButton, UserButton, useUser } from '@clerk/nextjs';
+import { useAuth, SignInButton, UserButton, useUser, SignOutButton } from '@clerk/nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 
 import sideBarStyle from './sidebar.module.css';
 import { getItems, getAllCats, getTodoItems } from "@/modules/Data";
-
+import styles from '@/styles/Home.module.css'
+import Link from 'next/link';
 
 export default function Sidebar() {
 
   const [openTodoCat, setTodoOpenCat] = useState(true);
   const [openDoneCat, setDoneOpenCat] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [items, setItems] = useState([]);
   const [jwt, setJwt] = useState('');
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   const router = useRouter();
   const { user } = useUser();
 
+
   useEffect(() => {
-    const fetchTodos = async () => {
+    async function fetchTodos() {
       if (userId) {
         const token = await getToken({ template: "codehooks" });
         setJwt(token);
-        // Get the unique categories from the todos
-        // const cats = [...new Set(items.map((item) => item.category))];
-        console.log(userId);
-        setCategories(await getAllCats(token, userId));
+        setItems(await getTodoItems(token, userId));
       }
-    };
+    }
     fetchTodos();
   }, [userId, jwt]);
+
+  useEffect(() => {
+    // console.log(items);
+    const cats = [...new Set(items.map((item) => item.category))];
+    console.log(cats);
+    setCategories(cats);
+  }, [items]);
 
   const handleClickTodoCat = () => {
     setTodoOpenCat(!openTodoCat);
@@ -63,17 +70,8 @@ export default function Sidebar() {
     backgroundColor: 'rgba(174, 165, 232, 0.2)'
   };
 
-  // todo: extract from todoitems set category
-  const allCats = categories.filter((category) => category).map((cat) => (
-    <ListItemButton key={cat._id} sx={{ pl: 12 }} href={`/todos/${cat}`}>
-      <ListItemText primary={cat.name} />
-    </ListItemButton>
-  ));
 
   return (
-
-    <div> {
-      userId ? (
       <List
         sx={listStyles}
         component="nav"
@@ -83,14 +81,14 @@ export default function Sidebar() {
             <ListItemIcon>
             <UserButton  /> 
               <p className={sideBarStyle.user}>Welcome {user?.firstName}!</p>
+              <SignOutButton className={sideBarStyle.signout}/>
             </ListItemIcon>
-            
           </ListSubheader>
         }
       >
         
         <Divider />
-        <ListItemButton href="/todos">
+        <ListItemButton key="all-to-do" href="/todos">
           <ListItemIcon>
             <FormatListBulletedIcon style={{ color: "white" }}/>
           </ListItemIcon>
@@ -98,7 +96,7 @@ export default function Sidebar() {
         </ListItemButton>
 
         <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }} onClick={handleClickTodoCat}>
+          <ListItemButton key="all-cat" sx={{ pl: 4 }} onClick={handleClickTodoCat}>
             <ListItemIcon>
               <AppsIcon style={{ color: "white" }}/>
             </ListItemIcon>
@@ -108,14 +106,20 @@ export default function Sidebar() {
 
           <Collapse in={openTodoCat} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {allCats}
+              {
+                categories.map((cat) => (
+                  <ListItemButton key={cat._id} sx={{ pl: 12 }} href={`/todos/${cat}`}>
+                    <ListItemText primary={cat} />
+                  </ListItemButton>
+                ))
+              }
             </List>
           </Collapse>
         </List>
 
         <Divider sx={{ color: "white" }}/>
 
-        <ListItemButton href="/done">
+        <ListItemButton key="all-done" href="/done">
             <ListItemIcon>
               <ChecklistIcon style={{ color: "white" }}/>
             </ListItemIcon>
@@ -123,7 +127,7 @@ export default function Sidebar() {
         </ListItemButton>
 
         <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }} onClick={handleClickDoneCat}>
+          <ListItemButton key="all-done-cats" sx={{ pl: 4 }} onClick={handleClickDoneCat}>
             <ListItemIcon>
               <AppsIcon style={{ color: "white" }}/>
             </ListItemIcon>
@@ -133,21 +137,17 @@ export default function Sidebar() {
 
           <Collapse in={openDoneCat} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {allCats}
+              {
+                categories.map((cat) => (
+                  <ListItemButton key={cat._id} sx={{ pl: 12 }} href={`/done/${cat}`}>
+                    <ListItemText primary={cat} />
+                  </ListItemButton>
+                ))
+              }
             </List>
           </Collapse>
         </List>
 
       </List>
-      ): (
-        <div>
-          {/* Show sign-in button if the user is not signed in */}
-          <p>Please log in to access your Todo List.</p>
-          <SignInButton mode='modal'>
-            <Button variant="contained">Sign In</Button>
-          </SignInButton>
-        </div>
-      )}
-    </div>
-  );
+  )
 }

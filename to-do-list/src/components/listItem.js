@@ -5,7 +5,7 @@ import { deleteTodo, getTodoItems, updateTodo, getDoneItems } from "@/modules/Da
 import { useAuth } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 
-export default function ListItem({ item, setTodoItems, hasCheck}) {
+export default function ListItem({ item, setMethod, getMethod, filterBycat, cat, hasCheck }) {
   const [jwt, setJwt] = useState('');
   const { isLoaded, userId, sessionId, getToken } = useAuth();
 
@@ -14,10 +14,10 @@ export default function ListItem({ item, setTodoItems, hasCheck}) {
       if (userId) {
         const token = await getToken({ template: "codehooks" });
         setJwt(token);
-        if (hasCheck)
-          setTodoItems(await getTodoItems(token, userId));
-        else 
-          setTodoItems(await getDoneItems(token, userId));
+        if (filterBycat)
+          setMethod(await getMethod(token, userId, cat));
+        else
+          setMethod(await getMethod(token, userId));
       }
     }
     process();
@@ -32,10 +32,10 @@ export default function ListItem({ item, setTodoItems, hasCheck}) {
       console.log(e);
     }
     
-    if(hasCheck) 
-      setTodoItems(await getTodoItems(jwt, userId));
-    else 
-      setTodoItems(await getDoneItems(jwt, userId));
+    if (filterBycat)
+      setMethod(await getMethod(jwt, userId, cat));
+    else
+      setMethod(await getMethod(jwt, userId));
   }
 
   // mark the item as done
@@ -48,7 +48,10 @@ export default function ListItem({ item, setTodoItems, hasCheck}) {
       console.log(err);
     }
 
-    setTodoItems(await getTodoItems(jwt, userId));
+    if (filterBycat)
+      setMethod(await getMethod(jwt, userId, cat));
+    else
+      setMethod(await getMethod(jwt, userId));
   }
 
   // go to /todo/id

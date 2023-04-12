@@ -81,18 +81,11 @@ export default function TodoItems() {
     return (<span>loading...</span>);
   } else {
     const todoListItems = todoItems.map((item) => (
-      <ListItem item={item} setTodoItems={setTodoItems} hasCheck={true} />
+      <ListItem key={item._id} item={item} setMethod={setTodoItems} getMethod={getTodoItems} filterBycat={false} hasCheck={true} />
     ));
 
     return (
       <>
-        <Head>
-          <title>Ying's To Do List</title>
-          <meta name="description" content="Ying's To Do List" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
         <div className={todosStyle.showItems}>
           <h2 style={{ margin: '.5em' }}>All To Do Items</h2>
           <ol>

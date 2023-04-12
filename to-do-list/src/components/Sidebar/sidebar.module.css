@@ -9,3 +9,11 @@
   justify-content: center;
   margin-left: 1em;
 }
+
+.signout {
+  margin: 1em;
+  padding: .5em;
+  background-color: rgb(55, 63, 167);
+  color: white;
+  border-radius: .5em;
+}

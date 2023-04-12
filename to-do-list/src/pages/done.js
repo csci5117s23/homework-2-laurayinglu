@@ -28,38 +28,34 @@ export default function TodoItems() {
         const token = await getToken({ template: "codehooks" });
         setJwt(token);
         setDoneItems(await getDoneItems(token, userId));
+        console.log("done items are", doneItems);
         setLoading(false);
       }
     }
     process();
   }, [userId, jwt]);
 
-
-  if(loading) {
-    return (<span>loading...</span>);
-  } else {
-
     const allDoneItems = doneItems.map((item) => (
-      <ListItem item={item} setTodoItems={setDoneItems} hasCheck={false} />
+      <ListItem key={item._id} item={item} setMethod={setDoneItems} getMethod={getDoneItems} filterBycat={false} hasCheck={false} />
     ));
 
     return (
-      <Layout>
+      <>
         <Head>
           <title>Ying's To Do List</title>
           <meta name="description" content="Ying's To Do List" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-
-        <div className={todosStyle.showItems}>
-          <h2 style={{ margin: '.5em' }}>All Completed Items</h2>
-          <ol>
-            {allDoneItems}
-          </ol>
-        </div> 
-
-      </Layout>
+        
+        <Layout>
+          <div className={todosStyle.showItems}>
+            <h2 style={{ margin: '.5em' }}>All Completed Items</h2>
+            <ol>
+              {allDoneItems}
+            </ol>
+          </div> 
+        </Layout>
+        </>
     )
   }
-}

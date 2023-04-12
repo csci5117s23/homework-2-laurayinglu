@@ -28,7 +28,7 @@ export default function Home() {
     if (user) {
       const timer = setTimeout(() => {
         router.push('/todos');
-      }, 1500);
+      }, 1200);
       return () => clearTimeout(timer);
     }
   }, [user, router]);
@@ -49,14 +49,7 @@ export default function Home() {
 
         <SignedIn>
           <p className={styles.fadeInOut}>Welcome, {user?.firstName}!</p>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <UserButton />
-            </div>
-
-          {/* <Link href='/todos'>
-            <Button variant='primary'>Go to the To Do List</Button>
-          </Link> */}
-
+          <UserButton />
         </SignedIn>
 
         <SignedOut>
@@ -64,7 +57,6 @@ export default function Home() {
             Please log in first.
             <SignInButton className={styles.card} />
           </div>
-          
         </SignedOut>
 
       </main>
