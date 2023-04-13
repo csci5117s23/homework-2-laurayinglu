@@ -7,6 +7,10 @@ import React, { useEffect, useState } from 'react'
 // this is the endpoint "/todos"
 export default function Home() {
 
+  function gotoTodo(cat) {
+    // e.preventDefault();
+    window.location.href = `/todos`;
+  }
   return (
     <>
       <Head>
@@ -17,7 +21,8 @@ export default function Home() {
       </Head>
 
       <div>
-        404 
+        The page is Not Found. 
+        <button onClick={gotoTodo}>Go Back to Todos</button>
       </div>
     </>
   )
