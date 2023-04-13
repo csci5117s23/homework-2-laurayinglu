@@ -41,6 +41,7 @@ export default function TodoItems() {
     async function process() {
       if (userId) {
         const token = await getToken({ template: "codehooks" });
+        console.log(token);
         setJwt(token);
         setTodoItems(await getTodoItems(token, userId));
         setCats(await getAllCats(token, userId));
@@ -69,7 +70,7 @@ export default function TodoItems() {
       console.log(newItem);
       setNewItemContent('');
       setSelectedCategory('');
-      setTodoItems([...todoItems, newItem]);
+      setTodoItems([newItem, ...todoItems]);
 
     } catch (e) {
       console.log(e);

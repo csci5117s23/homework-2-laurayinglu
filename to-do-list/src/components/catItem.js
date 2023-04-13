@@ -50,7 +50,7 @@ export default function CatItem({ cat, done, getCatMethod, hasCheckBox }) {
       console.log(newItem);
       setContent('');
 
-      setItems([...items, newItem]);
+      setItems([newItem, ...items]);
     } catch (e) {
       console.log(e);
     }

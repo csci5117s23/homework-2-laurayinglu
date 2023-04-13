@@ -32,9 +32,9 @@ export async function getTodoItem(authToken, todoId) {
   return await result.json();
 }
 
-// get to do items of current user
+// get to do items of current user by time desc
 export async function getTodoItems(authToken, userId) {
-  const result = await fetch(`${backend_base}/toDoItems?userId=${userId}&done=false`, {
+  const result = await fetch(`${backend_base}/getAlltoDoItems`, {
       'method':'GET',
       headers: {
         'x-api-key': API_KEY,

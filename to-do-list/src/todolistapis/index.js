@@ -35,6 +35,23 @@ const userAuth = async (req, res, next) => {
 }
 app.use(userAuth)
 
+
+async function getToDoItems(req, res) {
+  const userId = req.user_token.sub;
+  // const userId = req.params.userId;
+  const conn = await Datastore.open();  
+  const query = {"userId": userId, "done": false };
+  const options = {
+    filter: query,
+    sort: {'createdOn' : 0},
+  }  
+  conn.getMany('toDoItems', options).json(res);  
+}
+
+app.get('/getAlltoDoItems', getToDoItems);
+
+
+
 crudlify(app, {toDoItems: toDoItemsYup, categories: categoriesYup})
 
 // bind to serverless runtime

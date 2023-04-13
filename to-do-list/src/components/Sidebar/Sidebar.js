@@ -93,7 +93,7 @@ export default function Sidebar() {
 
       const newCate = await addCat(jwt, cat);
       console.log(newCate);
-      setCategories([...categories, newCate]);
+      setCategories([newCate, ...categories]);
       setNewCat("");
     } catch (e) {
       console.log(e);
