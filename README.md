@@ -18,3 +18,5 @@ Please fill out all of the following sections to help us grade your submission:
 * I started the challenge task: [yes]
 * I completed the challenge task: [yes]
 
+Some Notes:
+after adding a new category, if user wants to add a new task, you need to refresh the page to show the latest categories in the dropdown list.
