@@ -25,8 +25,8 @@ import styles from '@/styles/Home.module.css'
 
 export default function Sidebar() {
 
-  const [openTodoCat, setTodoOpenCat] = useState(true);
-  const [openDoneCat, setDoneOpenCat] = useState(true);
+  const [openTodoCat, setTodoOpenCat] = useState(false);
+  const [openDoneCat, setDoneOpenCat] = useState(false);
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
   const [jwt, setJwt] = useState('');
