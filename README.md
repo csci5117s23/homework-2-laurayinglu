@@ -7,14 +7,14 @@ Please fill out all of the following sections to help us grade your submission:
 
 ## Student (to be completed individually)
 
-* First Last, lu000097@umn.edu
+* Ying Lu, lu000097@umn.edu
 
 ## Link to Site
 
-<https://TODO.com/>
+<https://ying-to-do-list.netlify.app/>
 
 ## Challenge Task
 
-* I started the challenge task: [yes/no]
-* I completed the challenge task: [yes/no]
+* I started the challenge task: [yes]
+* I completed the challenge task: [yes]
 
